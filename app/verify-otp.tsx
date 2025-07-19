@@ -10,7 +10,7 @@ export default function VerifyOTP() {
     console.log('Verifying OTP:', otp);
     // Add OTP verification logic here
     // On successful verification, navigate to the next screen
-    // router.push('/home');
+    router.push('/welcome');
   };
 
   const handleResendOTP = () => {
