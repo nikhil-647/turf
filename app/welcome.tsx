@@ -16,8 +16,16 @@ export default function WelcomeScreen() {
   const [email, setEmail] = useState('');
 
   const handleSubmit = () => {
-    console.log('Submitted:', { name, email });
-    router.push('/');
+    // Store user data if needed
+    // You might want to store this in AsyncStorage or your backend
+    const userData = {
+      name,
+      email
+    };
+    console.log('User Data:', userData);
+    
+    // Navigate to the main app tabs
+    router.replace('/home');
   };
 
   return (
@@ -41,7 +49,7 @@ export default function WelcomeScreen() {
         {/* Form Section */}
         <StyledView>
           <StyledText className="text-2xl font-bold text-[#00BE76] mb-6 text-center">
-            What we should call you ?
+            What should we call you?
           </StyledText>
           
           <StyledView className="mb-4">
