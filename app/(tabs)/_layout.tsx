@@ -26,16 +26,7 @@ export default function TabsLayout() {
               <MaterialIcons name="home" size={24} color={color} />
             ),
           }}
-        />
-        <Tabs.Screen
-          name="pool-booking"
-          options={{
-            title: 'Pool Booking',
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="event-available" size={24} color={color} />
-            ),
-          }}
-        />
+        />        
         <Tabs.Screen
           name="full-booking"
           options={{

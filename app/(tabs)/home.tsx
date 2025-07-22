@@ -137,6 +137,20 @@ export default function HomeScreen() {
             </StyledView>
           </StyledView>
 
+          <StyledView className="mb-6">
+            <StyledText className="text-xl font-bold text-gray-800 mb-3">
+              Group Pay
+            </StyledText>
+            <StyledView className="gap-2">
+              <StyledText className="text-gray-700">1. Create a Group</StyledText>
+              <StyledText className="text-gray-700">2. Add Members</StyledText>
+              <StyledText className="text-gray-700">3. Recharge your group wallet (other members can also recharge)</StyledText>
+              <StyledText className="text-gray-700">4. Select a payment method: Group Pay</StyledText>
+              <StyledText className="text-gray-700">5. Enjoy your game.</StyledText>
+              <StyledText className="text-red-500">Note. In case you do not book a full booking Your slot would be cancelled if other member did full payment on same slot. and no money would be deducted from your wallet or group wallet.</StyledText>
+            </StyledView>
+          </StyledView>
+
           {/* Amenities Section */}
           <StyledView className="mb-6">
             <StyledText className="text-xl font-bold text-gray-800 mb-3">
