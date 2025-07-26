@@ -39,7 +39,7 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="chat"
           options={{
-            title: 'Chat',
+            title: 'Chats',
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="chat" size={24} color={color} />
             ),
@@ -48,9 +48,18 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="teams"
           options={{
-            title: 'Teams',
+            title: 'Team',
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="groups" size={24} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="pool-booking"
+          options={{
+            title: 'Pool Booking',
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="pool" size={24} color={color} />
             ),
           }}
         />
