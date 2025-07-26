@@ -273,6 +273,19 @@ export default function FullBookingScreen() {
                     <StyledView className="mt-4 flex-row justify-end border-t border-gray-200 pt-3">
                       <StyledText className="text-base font-bold">Total: ₹{totalPrice}</StyledText>
                     </StyledView>
+
+                    {/* Proceed button */}
+                    <StyledTouchableOpacity
+                      onPress={() => {
+                        setShowSummary(false);
+                        router.push('/pool-booking'); // adjust route if needed
+                      }}
+                      className="mt-4 bg-[#00BE76] py-3 rounded-lg items-center"
+                    >
+                      <StyledText className="text-white font-bold text-base">
+                        Proceed
+                      </StyledText>
+                    </StyledTouchableOpacity>
                   </StyledView>
                 </TouchableWithoutFeedback>
               </StyledView>
