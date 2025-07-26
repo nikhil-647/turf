@@ -151,13 +151,13 @@ export default function BookingSummaryScreen() {
             onPress={() => setBookingMode('SELF_FULL')}
             className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode === 'SELF_FULL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
           >
-            <StyledText className={`text-center font-medium ${bookingMode === 'SELF_FULL' ? 'text-white' : 'text-gray-800'}`}>Self (Full)</StyledText>
+            <StyledText className={`text-center font-medium ${bookingMode === 'SELF_FULL' ? 'text-white' : 'text-gray-800'}`}>Self (Private)</StyledText>
           </StyledTouchableOpacity>
           <StyledTouchableOpacity
             onPress={() => setBookingMode('TEAM_FULL')}
             className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode === 'TEAM_FULL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
           >
-            <StyledText className={`text-center font-medium ${bookingMode === 'TEAM_FULL' ? 'text-white' : 'text-gray-800'}`}>Team (Full)</StyledText>
+            <StyledText className={`text-center font-medium ${bookingMode === 'TEAM_FULL' ? 'text-white' : 'text-gray-800'}`}>Team (Private)</StyledText>
           </StyledTouchableOpacity>
           <StyledTouchableOpacity
             onPress={() => setBookingMode('TEAM_CHALLENGE')}
@@ -165,6 +165,24 @@ export default function BookingSummaryScreen() {
           >
             <StyledText className={`text-center font-medium ${bookingMode === 'TEAM_CHALLENGE' ? 'text-white' : 'text-gray-800'}`}>Team (Challenge)</StyledText>
           </StyledTouchableOpacity>
+        </StyledView>
+
+        <StyledView className="p-3 rounded-lg -mt-2 mb-4">
+          {bookingMode === 'SELF_FULL' && (
+            <StyledText className="text-xs text-gray-500 text-center">
+              Book for yourself and your friends. This is a private game, so you'll need all your players.
+            </StyledText>
+          )}
+          {bookingMode === 'TEAM_FULL' && (
+            <StyledText className="text-xs text-gray-500 text-center">
+              Book for your team using the team wallet. This private game is not shared with unknown players.
+            </StyledText>
+          )}
+          {bookingMode === 'TEAM_CHALLENGE' && (
+            <StyledText className="text-xs text-gray-500 text-center">
+              Create a challenge or accept one. An unknown team will join to compete against you.
+            </StyledText>
+          )}
         </StyledView>
 
         {/* Sport selection for Team Challenge */}
