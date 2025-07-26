@@ -160,7 +160,9 @@ export default function FullBookingScreen() {
 
   return (
     <>
-      <StyledScrollView className="flex-1 bg-gray-50">
+      <StyledScrollView
+        className="flex-1 bg-gray-50"
+        contentContainerStyle={{ paddingBottom: selectedSlotsGlobal.length > 0 ? 140 : 20 }}>
         {/* Header with date and navigation */}
         <StyledView className="p-4 bg-white border-b border-gray-200">
           <StyledView className="flex-row justify-between items-center">
@@ -278,7 +280,13 @@ export default function FullBookingScreen() {
                     <StyledTouchableOpacity
                       onPress={() => {
                         setShowSummary(false);
-                        router.push('/pool-booking'); // adjust route if needed
+                        router.push({
+                          pathname: '/booking-summary',
+                          params: {
+                            slots: JSON.stringify(selectedSlotsGlobal),
+                            total: String(totalPrice)
+                          }
+                        });
                       }}
                       className="mt-4 bg-[#00BE76] py-3 rounded-lg items-center"
                     >
@@ -302,9 +310,18 @@ export default function FullBookingScreen() {
               />
               <StyledText className="text-xs text-gray-700">Selected Slots</StyledText>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/pool-booking') /* adjust route as needed */}>
-              <MaterialIcons name="arrow-forward" size={32} color="#00BE76" />
-            </TouchableOpacity>
+            <StyledTouchableOpacity
+              onPress={() => router.push({
+                pathname: '/booking-summary',
+                params: {
+                  slots: JSON.stringify(selectedSlotsGlobal),
+                  total: String(totalPrice)
+                }
+              })}
+              className="bg-[#00BE76] px-6 py-3 rounded-lg"
+            >
+              <StyledText className="text-white font-bold text-base">Proceed</StyledText>
+            </StyledTouchableOpacity>
           </StyledView>
         </>
       )}
