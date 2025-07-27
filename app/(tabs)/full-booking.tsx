@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useRouter } from 'expo-router';
 import { styled } from 'nativewind';
@@ -68,6 +68,7 @@ const fetchTimeSlotsFromDB = async (date: string): Promise<TimeSlot[]> => {
 
 export default function FullBookingScreen() {
   const router = useRouter();
+  const scrollViewRef = useRef<ScrollView>(null);
   const today = dayjs().format('YYYY-MM-DD');
   const maxDate = dayjs().add(1, 'month').format('YYYY-MM-DD');
   const [selectedDate, setSelectedDate] = useState(today);
@@ -126,6 +127,9 @@ export default function FullBookingScreen() {
     const currentSlot = timeSlots[index];
     const newTimeSlots = [...timeSlots];
 
+    // Check if this is one of the last two slots (10 PM to 12 AM)
+    const isLateNightSlot = currentSlot.time.includes('10:00 PM') || currentSlot.time.includes('11:00 PM');
+
     if (currentSlot.status === 'selected') {
       // Deselect
       newTimeSlots[index].status = 'available';
@@ -136,6 +140,13 @@ export default function FullBookingScreen() {
       newTimeSlots[index].status = 'selected';
       setTimeSlots(newTimeSlots);
       setSelectedSlotsGlobal(prev => [...prev, { ...currentSlot, status: 'selected', date: selectedDate }]);
+
+      // If it's a late night slot, scroll to the bottom
+      if (isLateNightSlot) {
+        setTimeout(() => {
+          scrollViewRef.current?.scrollToEnd({ animated: true });
+        }, 100);
+      }
     }
   };
 
@@ -161,6 +172,7 @@ export default function FullBookingScreen() {
   return (
     <>
       <StyledScrollView
+        ref={scrollViewRef}
         className="flex-1 bg-gray-50"
         contentContainerStyle={{ paddingBottom: selectedSlotsGlobal.length > 0 ? 140 : 20 }}>
         {/* Header with date and navigation */}

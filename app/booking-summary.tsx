@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { styled } from 'nativewind';
@@ -24,6 +24,7 @@ type BookingMode = 'SELF_FULL' | 'TEAM_FULL' | 'TEAM_CHALLENGE';
 export default function BookingSummaryScreen() {
   const router = useRouter();
   const { slots = '[]', total = '0' } = useLocalSearchParams<{ slots: string; total: string }>();
+  const scrollViewRef = useRef<ScrollView>(null);
 
   // Parse params
   const selectedSlots = useMemo<SlotWithDate[]>(() => {
@@ -71,10 +72,8 @@ export default function BookingSummaryScreen() {
   useEffect(() => {
     if (bookingMode === 'SELF_FULL' && walletType === 'TEAM') {
       setWalletType('PERSONAL');
-    } else if ((bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE') && walletType === 'PERSONAL') {
-      setWalletType('TEAM');
     }
-  }, [bookingMode]);
+  }, [bookingMode, walletType]);
 
   const payableNow = useMemo(() => {
     switch (bookingMode) {
@@ -111,7 +110,7 @@ export default function BookingSummaryScreen() {
         <View style={{ width: 28 }} />
       </StyledView>
 
-      <StyledScrollView className="flex-1 p-4">
+      <StyledScrollView ref={scrollViewRef} className="flex-1 p-4">
         {/* Selected slots */}
         <StyledText className="text-lg font-bold mb-2">Your Selection</StyledText>
         {selectedSlots.map((slot, idx) => (
@@ -218,16 +217,21 @@ export default function BookingSummaryScreen() {
         <StyledView className="flex-row justify-between mb-4">
           <StyledTouchableOpacity
             onPress={() => setWalletType('PERSONAL')}
-            disabled={bookingMode !== 'SELF_FULL'}
-            className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode !== 'SELF_FULL' ? 'bg-gray-200 border-gray-300' : walletType === 'PERSONAL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+            className={`flex-1 mr-2 p-3 rounded-lg border ${walletType === 'PERSONAL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
           >
-            <StyledText className={`text-center font-medium ${walletType === 'PERSONAL' && bookingMode === 'SELF_FULL' ? 'text-white' : 'text-gray-800'}`}>Personal Wallet</StyledText>
+            <StyledText className={`text-center font-medium ${walletType === 'PERSONAL' ? 'text-white' : 'text-gray-800'}`}>Personal Wallet</StyledText>
             {walletType === 'PERSONAL' && (
               <StyledText className="text-center text-xs mt-1 text-white">₹{personalBalance}</StyledText>
             )}
           </StyledTouchableOpacity>
           <StyledTouchableOpacity
-            onPress={() => setWalletType('TEAM')}
+            onPress={() => {
+              setWalletType('TEAM');
+              // Add a small delay to ensure the UI updates before scrolling
+              setTimeout(() => {
+                scrollViewRef.current?.scrollTo({ y: 1000, animated: true });
+              }, 100);
+            }}
             disabled={bookingMode === 'SELF_FULL'}
             className={`flex-1 p-3 rounded-lg border ${bookingMode === 'SELF_FULL' ? 'bg-gray-200 border-gray-300' : walletType === 'TEAM' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
           >
@@ -242,9 +246,6 @@ export default function BookingSummaryScreen() {
 
         {bookingMode === 'SELF_FULL' && (
           <StyledText className="text-xs text-gray-500 mb-4">Team Wallet is unavailable for Self bookings.</StyledText>
-        )}
-        {(bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE') && (
-          <StyledText className="text-xs text-gray-500 mb-4">Personal Wallet is unavailable for Team bookings.</StyledText>
         )}
 
         {/* Team dropdown – only for admins */}
@@ -270,22 +271,26 @@ export default function BookingSummaryScreen() {
                 <TouchableWithoutFeedback onPress={() => setTeamModalVisible(false)}>
                   <StyledView className="flex-1 justify-end bg-black/50">
                     <TouchableWithoutFeedback onPress={() => {}}>
-                      <StyledView className="bg-white p-6 rounded-t-xl max-h-[50%]">
+                      <StyledView className="bg-white p-6 rounded-t-xl">
                         <StyledText className="text-lg font-bold mb-4 text-center">Select Team Wallet</StyledText>
-                        {teams.map(team => (
-                          <TouchableOpacity
-                            key={team.name}
-                            onPress={() => {
-                              setSelectedTeam(team.name);
-                              setTeamModalVisible(false);
-                            }}
-                            className="p-4 mb-2 rounded-lg border border-gray-200"
-                          >
-                            <StyledText className="text-center text-gray-800 font-medium">
-                              {team.name} (₹{team.balance})
-                            </StyledText>
-                          </TouchableOpacity>
-                        ))}
+                        <StyledView className="h-72">
+                          <StyledScrollView className="flex-1" showsVerticalScrollIndicator={true}>
+                            {teams.map(team => (
+                              <TouchableOpacity
+                                key={team.name}
+                                onPress={() => {
+                                  setSelectedTeam(team.name);
+                                  setTeamModalVisible(false);
+                                }}
+                                className="p-4 mb-2 rounded-lg border border-gray-200"
+                              >
+                                <StyledText className="text-center text-gray-800 font-medium">
+                                  {team.name} (₹{team.balance})
+                                </StyledText>
+                              </TouchableOpacity>
+                            ))}
+                          </StyledScrollView>
+                        </StyledView>
                       </StyledView>
                     </TouchableWithoutFeedback>
                   </StyledView>
@@ -307,12 +312,9 @@ export default function BookingSummaryScreen() {
       <StyledView className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
         <StyledTouchableOpacity
           onPress={handleConfirm}
-          disabled={
-            (walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam)) ||
-            (walletType === 'PERSONAL' && bookingMode !== 'SELF_FULL')
-          }
+          disabled={walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam)}
           className={`py-4 rounded-lg items-center ${
-            ((walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam)) || (walletType === 'PERSONAL' && bookingMode !== 'SELF_FULL')) ? 'bg-gray-400' : 'bg-[#00BE76]'
+            walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam) ? 'bg-gray-400' : 'bg-[#00BE76]'
           }`}
         >
           <StyledText className="text-white font-bold text-base">
