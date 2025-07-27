@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useRouter } from 'expo-router';
 import { styled } from 'nativewind';
-import { WeekCalendar, CalendarProvider } from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import WeeklyCalendar from '../../components/WeeklyCalendar';
+
 dayjs.extend(customParseFormat);
 
 const StyledView = styled(View);
@@ -157,14 +158,23 @@ export default function FullBookingScreen() {
   // Generate marked dates for the current week
   const markedDates = Array.from({ length: 7 }, (_, i) => {
     const date = startOfWeek.add(i, 'day').format('YYYY-MM-DD');
+    const isNextMonth = dayjs(date).month() > dayjs(selectedDate).month();
+    const isDisabled = !isDateWithinRange(date) || isNextMonth;
+    
     return date;
   }).reduce((acc, date) => {
+    const isNextMonth = dayjs(date).month() > dayjs(selectedDate).month();
+    const isDisabled = !isDateWithinRange(date) || isNextMonth;
+    
     acc[date] = {
-      textColor: date === selectedDate ? 'white' : date === today ? '#00BE76' : 'black',
-      selected: date === selectedDate,
+      textColor: isDisabled ? '#CCCCCC' : 
+                date === selectedDate ? 'white' : 
+                date === today ? '#00BE76' : 'black',
+      selected: date === selectedDate && !isDisabled,
       selectedColor: '#00BE76',
       marked: date === today && date !== selectedDate,
-      dotColor: '#00BE76'
+      dotColor: '#00BE76',
+      disabled: isDisabled
     };
     return acc;
   }, {} as Record<string, any>);
@@ -184,13 +194,23 @@ export default function FullBookingScreen() {
             <StyledView className="flex-row space-x-4">
               <TouchableOpacity 
                 onPress={() => handleDateSelect(dayjs(selectedDate).subtract(7, 'day').format('YYYY-MM-DD'))}
+                disabled={!isDateWithinRange(dayjs(selectedDate).subtract(7, 'day').format('YYYY-MM-DD'))}
               >
-                <MaterialIcons name="chevron-left" size={28} color="#00BE76" />
+                <MaterialIcons 
+                  name="chevron-left" 
+                  size={28} 
+                  color={isDateWithinRange(dayjs(selectedDate).subtract(7, 'day').format('YYYY-MM-DD')) ? '#00BE76' : '#CCCCCC'} 
+                />
               </TouchableOpacity>
               <TouchableOpacity 
                 onPress={() => handleDateSelect(dayjs(selectedDate).add(7, 'day').format('YYYY-MM-DD'))}
+                disabled={!isDateWithinRange(dayjs(selectedDate).add(7, 'day').format('YYYY-MM-DD'))}
               >
-                <MaterialIcons name="chevron-right" size={28} color="#00BE76" />
+                <MaterialIcons 
+                  name="chevron-right" 
+                  size={28} 
+                  color={isDateWithinRange(dayjs(selectedDate).add(7, 'day').format('YYYY-MM-DD')) ? '#00BE76' : '#CCCCCC'} 
+                />
               </TouchableOpacity>
             </StyledView>
           </StyledView>
@@ -199,30 +219,26 @@ export default function FullBookingScreen() {
               <StyledText className="text-gray-600 font-bold">
                 {dayjs(selectedDate).format('dddd, MMMM D, YYYY')}
               </StyledText>
-              <StyledTouchableOpacity onPress={() => handleDateSelect(today)}>
-                <StyledText className="text-[#00BE76] font-medium">Today</StyledText>
-              </StyledTouchableOpacity>
+              <StyledView className="flex-row items-center space-x-4">
+                <StyledText className="text-gray-500 text-sm">
+                  Available until {dayjs(maxDate).format('MMM D')}
+                </StyledText>
+                <StyledTouchableOpacity onPress={() => handleDateSelect(today)}>
+                  <StyledText className="text-[#00BE76] font-medium">Today</StyledText>
+                </StyledTouchableOpacity>
+              </StyledView>
             </StyledView>
           )}
         </StyledView>
 
         {/* Weekly Calendar */}
-        <CalendarProvider date={selectedDate}>
-          <WeekCalendar
-            current={selectedDate}
-            onDayPress={day => handleDateSelect(day.dateString)}
-            markedDates={markedDates}
-            theme={{
-              todayTextColor: '#00BE76',
-              selectedDayBackgroundColor: '#00BE76',
-              arrowColor: '#00BE76',
-            }}
-            minDate={today}
-            maxDate={maxDate}
-            firstDay={1}
-            hideDayNames={false}
-          />
-        </CalendarProvider>
+        <WeeklyCalendar
+          selectedDate={selectedDate}
+          onDateSelect={handleDateSelect}
+          minDate={today}
+          maxDate={maxDate}
+        />
+
         {/* Time slots */}
         {selectedDate && (
           <StyledView className="p-4">
