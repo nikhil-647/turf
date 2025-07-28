@@ -55,11 +55,11 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="pool-booking"
+          name="global-chat"
           options={{
-            title: 'Pool Booking',
+            title: 'Find Team',
             tabBarIcon: ({ color }) => (
-              <MaterialIcons name="pool" size={24} color={color} />
+              <MaterialIcons name="sports" size={24} color={color} />
             ),
           }}
         />
