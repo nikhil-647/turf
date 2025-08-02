@@ -265,7 +265,7 @@ export const CreatePlayerRequestModal: React.FC<CreatePlayerRequestModalProps> =
         <StyledView className="bg-white rounded-t-3xl">
           <StyledView className="p-4 border-b border-gray-200 flex-row justify-between items-center">
             <StyledText className="text-xl font-semibold text-gray-900">
-              Create Player Request
+              Players Request Form
             </StyledText>
             <StyledTouchableOpacity 
               onPress={onClose}
@@ -282,8 +282,8 @@ export const CreatePlayerRequestModal: React.FC<CreatePlayerRequestModalProps> =
                   Sport
                 </StyledText>
                 <StyledView className="flex-row">
-                  <SportButton type="football" sportIcon="sports-soccer" />
                   <SportButton type="cricket" sportIcon="sports-cricket" />
+                  <SportButton type="football" sportIcon="sports-soccer" />
                 </StyledView>
               </StyledView>
 

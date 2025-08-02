@@ -72,6 +72,8 @@ export default function BookingSummaryScreen() {
   useEffect(() => {
     if (bookingMode === 'SELF_FULL' && walletType === 'TEAM') {
       setWalletType('PERSONAL');
+    } else if ((bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE') && walletType === 'PERSONAL') {
+      setWalletType('TEAM');
     }
   }, [bookingMode, walletType]);
 
@@ -101,13 +103,21 @@ export default function BookingSummaryScreen() {
   return (
     <StyledView className="flex-1 bg-gray-50">
       {/* Header */}
-      <StyledView className="p-4 bg-white border-b border-gray-200 flex-row items-center">
-        <TouchableOpacity onPress={() => router.back()} className="mr-2">
-          <MaterialIcons name="arrow-back" size={28} color="#00BE76" />
-        </TouchableOpacity>
-        <StyledText className="flex-1 text-xl font-bold text-gray-800 text-center">Booking Summary</StyledText>
-        {/* Placeholder to balance flex for centering title */}
-        <View style={{ width: 28 }} />
+      <StyledView 
+        style={{ 
+          backgroundColor: 'white',
+          borderBottomWidth: 1,
+          borderBottomColor: '#e5e7eb'
+        }}
+      >
+        <StyledView className="p-4 flex-row items-center">
+          <TouchableOpacity onPress={() => router.back()} className="mr-2">
+            <MaterialIcons name="arrow-back" size={28} color="#00BE76" />
+          </TouchableOpacity>
+          <StyledText className="flex-1 text-xl font-bold text-gray-800 text-center">Booking Summary</StyledText>
+          {/* Placeholder to balance flex for centering title */}
+          <View style={{ width: 28 }} />
+        </StyledView>
       </StyledView>
 
       <StyledScrollView ref={scrollViewRef} className="flex-1 p-4">
@@ -217,9 +227,16 @@ export default function BookingSummaryScreen() {
         <StyledView className="flex-row justify-between mb-4">
           <StyledTouchableOpacity
             onPress={() => setWalletType('PERSONAL')}
-            className={`flex-1 mr-2 p-3 rounded-lg border ${walletType === 'PERSONAL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+            disabled={bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE'}
+            className={`flex-1 mr-2 p-3 rounded-lg border ${
+              bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE' 
+                ? 'bg-gray-200 border-gray-300' 
+                : walletType === 'PERSONAL' 
+                  ? 'bg-[#00BE76] border-[#00BE76]' 
+                  : 'border-gray-300 bg-white'
+            }`}
           >
-            <StyledText className={`text-center font-medium ${walletType === 'PERSONAL' ? 'text-white' : 'text-gray-800'}`}>Personal Wallet</StyledText>
+            <StyledText className={`text-center font-medium ${walletType === 'PERSONAL' && bookingMode === 'SELF_FULL' ? 'text-white' : 'text-gray-800'}`}>Personal Wallet</StyledText>
             {walletType === 'PERSONAL' && (
               <StyledText className="text-center text-xs mt-1 text-white">₹{personalBalance}</StyledText>
             )}
@@ -243,6 +260,10 @@ export default function BookingSummaryScreen() {
             )}
           </StyledTouchableOpacity>
         </StyledView>
+
+        {(bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE') && (
+          <StyledText className="text-xs text-gray-500 mb-4">Personal Wallet is unavailable for Team bookings.</StyledText>
+        )}
 
         {bookingMode === 'SELF_FULL' && (
           <StyledText className="text-xs text-gray-500 mb-4">Team Wallet is unavailable for Self bookings.</StyledText>

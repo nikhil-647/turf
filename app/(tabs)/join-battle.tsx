@@ -4,7 +4,10 @@ import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import WeeklyCalendar from '../../components/WeeklyCalendar';
+
+dayjs.extend(isBetween);
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -65,7 +68,7 @@ const MOCK_CHALLENGES = [
   }
 ];
 
-export default function TeamsScreen() {
+export default function JoinBattleScreen() {
   const router = useRouter();
   const today = dayjs().format('YYYY-MM-DD');
   const maxDate = dayjs().add(1, 'month').format('YYYY-MM-DD');
@@ -96,12 +99,42 @@ export default function TeamsScreen() {
           <StyledText className="text-xl font-bold text-gray-800">
             Open Challenges
           </StyledText>
+          <StyledView className="flex-row space-x-4">
+            <TouchableOpacity 
+              onPress={() => handleDateSelect(dayjs(selectedDate).subtract(7, 'day').format('YYYY-MM-DD'))}
+              disabled={!dayjs(selectedDate).subtract(7, 'day').isBetween(today, maxDate, 'day', '[]')}
+            >
+              <MaterialIcons 
+                name="chevron-left" 
+                size={28} 
+                color={dayjs(selectedDate).subtract(7, 'day').isBetween(today, maxDate, 'day', '[]') ? '#00BE76' : '#CCCCCC'} 
+              />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => handleDateSelect(dayjs(selectedDate).add(7, 'day').format('YYYY-MM-DD'))}
+              disabled={!dayjs(selectedDate).add(7, 'day').isBetween(today, maxDate, 'day', '[]')}
+            >
+              <MaterialIcons 
+                name="chevron-right" 
+                size={28} 
+                color={dayjs(selectedDate).add(7, 'day').isBetween(today, maxDate, 'day', '[]') ? '#00BE76' : '#CCCCCC'} 
+              />
+            </TouchableOpacity>
+          </StyledView>
         </StyledView>
         {selectedDate && (
           <StyledView className="flex-row justify-between items-center mt-4">
             <StyledText className="text-gray-600 font-bold">
               {dayjs(selectedDate).format('dddd, MMMM D, YYYY')}
             </StyledText>
+            <StyledView className="flex-row items-center space-x-4">
+              <StyledText className="text-gray-500 text-sm">
+                Available until {dayjs(maxDate).format('MMM D')}
+              </StyledText>
+              <StyledTouchableOpacity onPress={() => handleDateSelect(today)}>
+                <StyledText className="text-[#00BE76] font-medium">Today</StyledText>
+              </StyledTouchableOpacity>
+            </StyledView>
           </StyledView>
         )}
       </StyledView>

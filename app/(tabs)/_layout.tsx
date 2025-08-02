@@ -40,15 +40,16 @@ export default function TabsLayout() {
           name="chat"
           options={{
             title: 'Chats',
+            headerShown: false,
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="chat" size={24} color={color} />
             ),
           }}
         />
         <Tabs.Screen
-          name="teams"
+          name="join-battle"
           options={{
-            title: 'Team',
+            title: 'Join Battle',
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="groups" size={24} color={color} />
             ),
@@ -57,7 +58,7 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="global-chat"
           options={{
-            title: 'Find Team',
+            title: 'Find Players',
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="sports" size={24} color={color} />
             ),

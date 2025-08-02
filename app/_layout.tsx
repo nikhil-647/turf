@@ -1,5 +1,5 @@
 import { Drawer } from 'expo-router/drawer';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import Header from '../components/Header';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -49,6 +49,7 @@ export default function RootLayout() {
       screenOptions={({ route }) => ({
         // Hide header for specific routes (welcome, login, OTP, etc.)
         headerShown: !hiddenRoutes.includes(route.name),
+        header: () => <Header />,
         drawerStyle: {
           backgroundColor: '#FFFFFF',
         },
@@ -72,7 +73,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="person-outline" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
       <Drawer.Screen
@@ -82,7 +82,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="event-note" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
       <Drawer.Screen
@@ -92,7 +91,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="account-balance-wallet" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
       <Drawer.Screen
@@ -102,7 +100,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="support-agent" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
       <Drawer.Screen
@@ -112,7 +109,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="policy" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
       <Drawer.Screen
@@ -122,7 +118,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="gavel" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
       <Drawer.Screen
@@ -132,7 +127,6 @@ export default function RootLayout() {
           drawerIcon: ({ color }) => (
             <MaterialIcons name="logout" size={24} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
     </Drawer>
