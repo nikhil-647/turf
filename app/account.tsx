@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, Alert } fro
 import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -120,9 +121,9 @@ export default function AccountScreen() {
             )}
             <StyledTouchableOpacity
               onPress={pickImage}
-              className="absolute bottom-0 right-0 bg-[#00BE76] p-2 rounded-full"
+              className="absolute bottom-0 right-0 bg-primary p-2 rounded-full"
             >
-              <MaterialIcons name="camera-alt" size={20} color="white" />
+              <MaterialIcons name="camera-alt" size={20} color={colors.white} />
             </StyledTouchableOpacity>
           </StyledView>
           <StyledText className="text-sm text-gray-500 mt-2">
@@ -141,19 +142,19 @@ export default function AccountScreen() {
             <StyledTouchableOpacity
               onPress={() => isEditing ? handleUpdateProfile() : setIsEditing(true)}
               className={`flex-row items-center px-4 py-2 rounded-full ${
-                isEditing ? 'bg-[#00BE76]' : 'bg-[#00BE76]/10'
+                isEditing ? 'bg-primary' : 'bg-primary/10'
               }`}
               activeOpacity={0.7}
             >
               <MaterialIcons 
                 name={isEditing ? "check" : "edit"} 
                 size={18} 
-                color={isEditing ? "#FFFFFF" : "#00BE76"} 
+                color={isEditing ? colors.white : colors.primary} 
                 style={{ marginRight: 4 }}
               />
               <StyledText 
                 className={`font-medium ${
-                  isEditing ? 'text-white' : 'text-[#00BE76]'
+                  isEditing ? 'text-white' : 'text-primary'
                 }`}
               >
                 {isEditing ? 'Save' : 'Edit'}
@@ -166,7 +167,7 @@ export default function AccountScreen() {
             <StyledText className="text-sm text-gray-600 mb-1">Full Name</StyledText>
             <StyledTextInput
               className={`border rounded-lg p-3 text-base ${
-                isEditing ? errors.name ? 'border-red-500' : 'border-[#00BE76]' : 'border-gray-200'
+                isEditing ? errors.name ? 'border-red-500' : 'border-primary' : 'border-gray-200'
               }`}
               value={userData.name}
               onChangeText={(text) => handleFieldChange('name', text)}
@@ -184,7 +185,7 @@ export default function AccountScreen() {
             <StyledText className="text-sm text-gray-600 mb-1">Username</StyledText>
             <StyledTextInput
               className={`border rounded-lg p-3 text-base ${
-                isEditing ? errors.username ? 'border-red-500' : 'border-[#00BE76]' : 'border-gray-200'
+                isEditing ? errors.username ? 'border-red-500' : 'border-primary' : 'border-gray-200'
               }`}
               value={userData.username}
               onChangeText={(text) => handleFieldChange('username', text)}
@@ -206,7 +207,7 @@ export default function AccountScreen() {
             <StyledText className="text-sm text-gray-600 mb-1">Email</StyledText>
             <StyledTextInput
               className={`border rounded-lg p-3 text-base ${
-                isEditing ? errors.email ? 'border-red-500' : 'border-[#00BE76]' : 'border-gray-200'
+                isEditing ? errors.email ? 'border-red-500' : 'border-primary' : 'border-gray-200'
               }`}
               value={userData.email}
               onChangeText={(text) => handleFieldChange('email', text)}

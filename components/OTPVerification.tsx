@@ -4,6 +4,7 @@ import { styled } from 'nativewind';
 import { Button } from './Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -88,7 +89,7 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
             setIsFocused(true);
           }}
           className={`w-12 h-14 border-2 rounded-xl items-center justify-center mx-1
-            ${isFocused ? 'border-[#00BE76]' : 'border-gray-300'}
+            ${isFocused ? 'border-primary' : 'border-gray-300'}
             ${otp[i] ? 'bg-gray-50' : 'bg-white'}`}
         >
           <StyledText className="text-2xl font-bold text-gray-800">
@@ -111,8 +112,8 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
       >
         <StyledView className="items-center flex-1 justify-center px-6 py-8">
           <StyledView className="items-center mb-6">
-            <StyledView className="w-20 h-20 bg-[#00BE76]/10 rounded-full items-center justify-center mb-4">
-              <MaterialIcons name="verified-user" size={40} color="#00BE76" />
+            <StyledView className="w-20 h-20 bg-primary-light rounded-full items-center justify-center mb-4">
+              <MaterialIcons name="verified-user" size={40} color={colors.primary} />
             </StyledView>
             <StyledText className="text-3xl font-bold text-gray-800 mb-2">
               Verification
@@ -155,7 +156,7 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
             </StyledText>
             {canResend ? (
               <StyledPressable onPress={handleResend}>
-                <StyledText className="text-[#00BE76] font-semibold text-base">
+                <StyledText className="text-primary font-semibold text-base">
                   Resend Code
                 </StyledText>
               </StyledPressable>

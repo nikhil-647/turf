@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { styled } from 'nativewind';
 import dayjs from 'dayjs';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -89,7 +90,7 @@ export default function YourBookingScreen() {
       key={key}
       onPress={() => setSelectedTab(key)}
       className={`flex-1 py-2.5 rounded-lg mx-1 ${
-        selectedTab === key ? 'bg-[#00BE76]' : 'bg-gray-100'
+        selectedTab === key ? 'bg-primary' : 'bg-gray-100'
       }`}
     >
       <StyledText
@@ -109,7 +110,7 @@ export default function YourBookingScreen() {
         <StyledView
           className={`px-2 py-1 rounded ${
             item.status === 'upcoming'
-              ? 'bg-[#00BE76]/10'
+              ? 'bg-primary-light'
               : item.status === 'completed'
               ? 'bg-blue-100'
               : 'bg-red-100'
@@ -118,7 +119,7 @@ export default function YourBookingScreen() {
           <StyledText
             className={`${
               item.status === 'upcoming'
-                ? 'text-[#00BE76]'
+                ? 'text-primary'
                 : item.status === 'completed'
                 ? 'text-blue-700'
                 : 'text-red-700'
@@ -164,7 +165,7 @@ export default function YourBookingScreen() {
         ListFooterComponent={
           loading ? (
             <StyledView className="py-4">
-              <ActivityIndicator size="small" color="#00BE76" />
+              <ActivityIndicator size="small" color={colors.primary} />
             </StyledView>
           ) : null
         }

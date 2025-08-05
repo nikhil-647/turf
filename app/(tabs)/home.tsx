@@ -5,6 +5,7 @@ import { MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-ic
 import { useRouter } from 'expo-router';
 import ImageView from 'react-native-image-viewing';
 import PagerView from 'react-native-pager-view';
+import { colors } from '../../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -92,7 +93,7 @@ export default function HomeScreen() {
         {/* Hero Section */}
         <Animated.View
           style={{ transform: [{ scale: headerScale }] }}
-          className="bg-[#00BE76] p-6 rounded-b-3xl"
+          className="bg-primary p-6 rounded-b-3xl"
         >
           <StyledText className="text-3xl font-bold text-white mb-2">
             Jai Hanuman Turf
@@ -134,7 +135,7 @@ export default function HomeScreen() {
               <StyledView
                 key={index}
                 className={`w-2 h-2 rounded-full ${
-                  currentImageIndex === index ? 'bg-[#00BE76]' : 'bg-gray-300'
+                  currentImageIndex === index ? 'bg-primary' : 'bg-gray-300'
                 }`}
               />
             ))}
@@ -153,18 +154,18 @@ export default function HomeScreen() {
         {/* Location Card */}
         <StyledView className="mx-4 bg-white rounded-2xl p-4 shadow-md mb-6">
           <StyledView className="flex-row items-start">
-            <MaterialIcons name="location-on" size={24} color="#00BE76" />
+            <MaterialIcons name="location-on" size={24} color={colors.primary} />
             <StyledView className="flex-1 ml-3">
               <StyledText className="text-gray-600">
                 Kalika Mata Gate, Thane Rd, near Gaurav Dairy Farm, Bangar Nagar, Rajlaxmi Complex, Kalher, Bhiwandi, Maharashtra 421302
               </StyledText>
               <StyledTouchableOpacity 
-                className="bg-[#00BE76] px-4 py-2 rounded-full mt-3 self-start flex-row items-center"
+                className="bg-primary px-4 py-2 rounded-full mt-3 self-start flex-row items-center"
                 onPress={() => {
                   Linking.openURL('https://maps.app.goo.gl/aWJurdpFw7y9zBrx9?g_st=iw');
                 }}
               >
-                <Ionicons name="navigate" size={16} color="white" />
+                <Ionicons name="navigate" size={16} color={colors.white} />
                 <StyledText className="text-white font-medium ml-2">
                   Get Directions
                 </StyledText>
@@ -181,8 +182,8 @@ export default function HomeScreen() {
           <StyledView style={{ rowGap: 16 }}>
             {bookingSteps.map((item, index) => (
               <StyledView key={index} className="flex-row items-center">
-                <StyledView className="w-8 h-8 bg-[#00BE76]/10 rounded-full items-center justify-center">
-                  <MaterialIcons name={item.icon} size={20} color="#00BE76" />
+                <StyledView className="w-8 h-8 bg-primary-light rounded-full items-center justify-center">
+                  <MaterialIcons name={item.icon} size={20} color={colors.primary} />
                 </StyledView>
                 <StyledText className="text-gray-700 ml-3 flex-1">
                   {item.text}
@@ -205,8 +206,8 @@ export default function HomeScreen() {
               "Your booking would be completed"
             ].map((text, index) => (
               <StyledView key={index} className="flex-row items-center">
-                <StyledView className="w-6 h-6 bg-[#00BE76]/10 rounded-full items-center justify-center mr-3">
-                  <StyledText className="text-[#00BE76] font-bold">{index + 1}</StyledText>
+                <StyledView className="w-6 h-6 bg-primary-light rounded-full items-center justify-center mr-3">
+                  <StyledText className="text-primary font-bold">{index + 1}</StyledText>
                 </StyledView>
                 <StyledText className="text-gray-700">{text}</StyledText>
               </StyledView>
@@ -225,15 +226,15 @@ export default function HomeScreen() {
             </StyledText>
             <StyledTouchableOpacity
               onPress={() => router.push('/join-battle')}
-              className="bg-[#00BE76]/10 px-4 py-2 rounded-full"
+              className="bg-primary-light px-4 py-2 rounded-full"
             >
-              <StyledText className="text-[#00BE76] font-semibold">View All</StyledText>
+              <StyledText className="text-primary font-semibold">View All</StyledText>
             </StyledTouchableOpacity>
           </StyledView>
           
-          <StyledView className="bg-[#00BE76]/5 p-4 rounded-xl mb-4">
+          <StyledView className="bg-primary-light p-4 rounded-xl mb-4">
             <StyledView className="flex-row items-center mb-2">
-              <MaterialIcons name="sports-soccer" size={20} color="#00BE76" />
+              <MaterialIcons name="sports-soccer" size={20} color={colors.primary} />
               <StyledText className="text-gray-800 font-semibold ml-2">How to Join a Battle?</StyledText>
             </StyledView>
             <StyledText className="text-gray-600 text-sm mb-2">
@@ -249,8 +250,8 @@ export default function HomeScreen() {
               { text: "Get Ready for the Game!", icon: "sports" }
             ].map((item, index) => (
               <StyledView key={index} className="flex-row items-center">
-                <StyledView className="w-8 h-8 bg-[#00BE76]/10 rounded-full items-center justify-center">
-                  <MaterialIcons name={item.icon as MaterialIconName} size={20} color="#00BE76" />
+                <StyledView className="w-8 h-8 bg-primary-light rounded-full items-center justify-center">
+                  <MaterialIcons name={item.icon as MaterialIconName} size={20} color={colors.primary} />
                 </StyledView>
                 <StyledView className="flex-1 ml-3">
                   <StyledText className="text-gray-700">{item.text}</StyledText>
@@ -280,8 +281,8 @@ export default function HomeScreen() {
                 style={{ width: '31%' }}
               >
                 <StyledView className="items-center">
-                  <StyledView className="w-9 h-9 bg-[#00BE76]/10 rounded-full items-center justify-center mb-2">
-                    <MaterialIcons name={item.icon as MaterialIconName} size={20} color="#00BE76" />
+                  <StyledView className="w-9 h-9 bg-primary-light rounded-full items-center justify-center mb-2">
+                    <MaterialIcons name={item.icon as MaterialIconName} size={20} color={colors.primary} />
                   </StyledView>
                   <StyledText className="text-gray-800 font-medium text-center text-sm">
                     {item.text}
@@ -295,10 +296,10 @@ export default function HomeScreen() {
 
       {/* Floating Action Button */}
       <StyledTouchableOpacity 
-        className="absolute bottom-6 right-6 bg-[#00BE76] rounded-full shadow-lg flex-row items-center px-4 py-3"
+        className="absolute bottom-6 right-6 bg-primary rounded-full shadow-lg flex-row items-center px-4 py-3"
         onPress={() => router.push('/full-booking')}
       >
-        <MaterialIcons name="event-available" size={24} color="white" />
+        <MaterialIcons name="event-available" size={24} color={colors.white} />
         <StyledText className="text-white font-semibold ml-2">
           Book Now
         </StyledText>

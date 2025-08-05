@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, useRouter } from 'expo-router';
 import { styled } from 'nativewind';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -27,7 +28,7 @@ export function SecondaryHeader({ title, showBackButton = true, rightElement }: 
       <StyledView className="p-4 flex-row items-center">
         {showBackButton && (
           <TouchableOpacity onPress={() => router.back()} className="mr-2">
-            <MaterialIcons name="arrow-back" size={28} color="#00BE76" />
+            <MaterialIcons name="arrow-back" size={28} color={colors.primary} />
           </TouchableOpacity>
         )}
         <StyledText className="flex-1 text-xl font-bold text-gray-800 text-center">
@@ -59,7 +60,7 @@ export default function Header() {
             navigation.openDrawer?.();
           }}
         >
-          <MaterialIcons name="menu" size={24} color="#00BE76" />
+          <MaterialIcons name="menu" size={24} color={colors.primary} />
         </TouchableOpacity>
         <StyledText className="ml-3 text-lg font-semibold text-gray-800">
           Hi Nikhil
@@ -71,7 +72,7 @@ export default function Header() {
         onPress={() => router.push('/wallet')}
         className="flex-row items-center"
       >
-        <MaterialIcons name="account-balance-wallet" size={20} color="#00BE76" />
+        <MaterialIcons name="account-balance-wallet" size={20} color={colors.primary} />
         <StyledText className="ml-2 text-base font-medium text-gray-800">₹50</StyledText>
       </TouchableOpacity>
     </StyledView>

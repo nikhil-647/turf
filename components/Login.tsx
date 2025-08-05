@@ -22,7 +22,7 @@ export const LoginScreen = ({ onSendOTP }: LoginScreenProps) => {
   return (
     <StyledView className="flex-1 bg-white">
       <StyledView className="items-center flex-1 justify-center px-6">
-        <StyledText className="text-4xl font-bold text-[#00BE76] mb-2">Enter Mobile No</StyledText>
+        <StyledText className="text-4xl font-bold text-primary mb-2">Enter Mobile No</StyledText>
         <StyledText className="text-xl text-gray-600 mb-8">Have Fun with Friends!</StyledText>
         
         <StyledView className="w-full mb-6">

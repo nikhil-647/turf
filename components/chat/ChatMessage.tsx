@@ -21,7 +21,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, timestamp, is
       <StyledView
         className={`rounded-2xl px-4 py-3 ${
           isSent
-            ? 'bg-[#00BE76] rounded-tr-none'
+            ? 'bg-primary rounded-tr-none'
             : 'bg-gray-200 rounded-tl-none'
         }`}
       >

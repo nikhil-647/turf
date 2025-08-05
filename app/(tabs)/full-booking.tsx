@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import WeeklyCalendar from '../../components/WeeklyCalendar';
+import { colors } from '../../constants/colors';
 
 dayjs.extend(customParseFormat);
 
@@ -169,11 +170,11 @@ export default function FullBookingScreen() {
     acc[date] = {
       textColor: isDisabled ? '#CCCCCC' : 
                 date === selectedDate ? 'white' : 
-                date === today ? '#00BE76' : 'black',
+                date === today ? colors.primary : 'black',
       selected: date === selectedDate && !isDisabled,
-      selectedColor: '#00BE76',
+      selectedColor: colors.primary,
       marked: date === today && date !== selectedDate,
-      dotColor: '#00BE76',
+      dotColor: colors.primary,
       disabled: isDisabled
     };
     return acc;
@@ -199,7 +200,7 @@ export default function FullBookingScreen() {
                 <MaterialIcons 
                   name="chevron-left" 
                   size={28} 
-                  color={isDateWithinRange(dayjs(selectedDate).subtract(7, 'day').format('YYYY-MM-DD')) ? '#00BE76' : '#CCCCCC'} 
+                  color={isDateWithinRange(dayjs(selectedDate).subtract(7, 'day').format('YYYY-MM-DD')) ? colors.primary : '#CCCCCC'} 
                 />
               </TouchableOpacity>
               <TouchableOpacity 
@@ -209,7 +210,7 @@ export default function FullBookingScreen() {
                 <MaterialIcons 
                   name="chevron-right" 
                   size={28} 
-                  color={isDateWithinRange(dayjs(selectedDate).add(7, 'day').format('YYYY-MM-DD')) ? '#00BE76' : '#CCCCCC'} 
+                  color={isDateWithinRange(dayjs(selectedDate).add(7, 'day').format('YYYY-MM-DD')) ? colors.primary : '#CCCCCC'} 
                 />
               </TouchableOpacity>
             </StyledView>
@@ -224,7 +225,7 @@ export default function FullBookingScreen() {
                   Available until {dayjs(maxDate).format('MMM D')}
                 </StyledText>
                 <StyledTouchableOpacity onPress={() => handleDateSelect(today)}>
-                  <StyledText className="text-[#00BE76] font-medium">Today</StyledText>
+                  <StyledText className="text-primary font-medium">Today</StyledText>
                 </StyledTouchableOpacity>
               </StyledView>
             </StyledView>
@@ -316,7 +317,7 @@ export default function FullBookingScreen() {
                           }
                         });
                       }}
-                      className="mt-4 bg-[#00BE76] py-3 rounded-lg items-center"
+                      className="mt-4 bg-primary py-3 rounded-lg items-center"
                     >
                       <StyledText className="text-white font-bold text-base">
                         Proceed
@@ -334,7 +335,7 @@ export default function FullBookingScreen() {
               <MaterialIcons
                 name={showSummary ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
                 size={32}
-                color="#00BE76"
+                color={colors.primary}
               />
               <StyledText className="text-xs text-gray-700">Selected Slots</StyledText>
             </TouchableOpacity>
@@ -346,7 +347,7 @@ export default function FullBookingScreen() {
                   total: String(totalPrice)
                 }
               })}
-              className="bg-[#00BE76] px-6 py-3 rounded-lg"
+              className="bg-primary px-6 py-3 rounded-lg"
             >
               <StyledText className="text-white font-bold text-base">Proceed</StyledText>
             </StyledTouchableOpacity>

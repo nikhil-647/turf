@@ -42,7 +42,7 @@ export const ChatListItem: React.FC<ChatListItemProps> = ({
             className="h-full w-full"
           />
         ) : (
-          <StyledView className="h-full w-full bg-[#00BE76] items-center justify-center">
+          <StyledView className="h-full w-full bg-primary items-center justify-center">
             <StyledText className="text-white text-lg font-semibold">
               {userName.charAt(0).toUpperCase()}
             </StyledText>
@@ -68,7 +68,7 @@ export const ChatListItem: React.FC<ChatListItemProps> = ({
             {lastMessage}
           </StyledText>
           {unreadCount > 0 && (
-            <StyledView className="bg-[#00BE76] rounded-full min-w-[20px] h-5 items-center justify-center px-1">
+            <StyledView className="bg-primary rounded-full min-w-[20px] h-5 items-center justify-center px-1">
               <StyledText className="text-xs text-white font-medium">
                 {unreadCount}
               </StyledText>

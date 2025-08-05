@@ -4,6 +4,7 @@ import { styled } from 'nativewind';
 import { Button } from '../components/Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -33,8 +34,8 @@ export default function WelcomeScreen() {
       <StyledView className="flex-1 px-6 pt-4">
         {/* Welcome Section */}
         <StyledView className="items-center justify-center mb-8">
-          <StyledView className="w-20 h-20 bg-[#00BE76]/10 rounded-full items-center justify-center mb-6">
-            <MaterialIcons name="celebration" size={40} color="#00BE76" />
+          <StyledView className="w-20 h-20 bg-primary-light rounded-full items-center justify-center mb-6">
+            <MaterialIcons name="celebration" size={40} color={colors.primary} />
           </StyledView>
           
           <StyledText className="text-3xl font-bold text-gray-800 mb-3 text-center">
@@ -48,13 +49,13 @@ export default function WelcomeScreen() {
 
         {/* Form Section */}
         <StyledView>
-          <StyledText className="text-2xl font-bold text-[#00BE76] mb-6 text-center">
+          <StyledText className="text-2xl font-bold text-primary mb-6 text-center">
             What should we call you?
           </StyledText>
           
           <StyledView className="mb-4">
             <StyledTextInput
-              className="border border-[#00BE76] rounded-lg p-4 text-base"
+              className="border border-primary rounded-lg p-4 text-base"
               placeholder="Name"
               value={name}
               onChangeText={setName}
@@ -63,7 +64,7 @@ export default function WelcomeScreen() {
 
           <StyledView className="mb-8">
             <StyledTextInput
-              className="border border-[#00BE76] rounded-lg p-4 text-base"
+              className="border border-primary rounded-lg p-4 text-base"
               placeholder="Email Id (Optional)"
               value={email}
               onChangeText={setEmail}

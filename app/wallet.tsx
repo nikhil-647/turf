@@ -4,6 +4,7 @@ import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -214,7 +215,7 @@ export default function WalletScreen() {
       <StyledView className="px-4 py-4 bg-white shadow-sm">
         <StyledText className="text-base text-gray-600 mb-2">Current Balance</StyledText>
         <StyledView className="flex-row items-center">
-          <MaterialIcons name="account-balance-wallet" size={24} color="#00BE76" />
+          <MaterialIcons name="account-balance-wallet" size={24} color={colors.primary} />
           <StyledText className="text-3xl font-bold text-gray-800 ml-2">
             ₹{currentBalance}
           </StyledText>
@@ -224,7 +225,7 @@ export default function WalletScreen() {
       {/* Recharge Button */}
       <StyledView className="px-4 py-4">
         <StyledTouchableOpacity
-          className="bg-[#00BE76] py-3 rounded-full"
+          className="bg-primary py-3 rounded-full"
           onPress={handleRecharge}
         >
           <StyledText className="text-white text-center font-semibold text-lg">

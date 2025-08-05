@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import WeeklyCalendar from '../../components/WeeklyCalendar';
+import { colors } from '../../constants/colors';
 
 dayjs.extend(isBetween);
 
@@ -107,7 +108,7 @@ export default function JoinBattleScreen() {
               <MaterialIcons 
                 name="chevron-left" 
                 size={28} 
-                color={dayjs(selectedDate).subtract(7, 'day').isBetween(today, maxDate, 'day', '[]') ? '#00BE76' : '#CCCCCC'} 
+                color={dayjs(selectedDate).subtract(7, 'day').isBetween(today, maxDate, 'day', '[]') ? colors.primary : '#CCCCCC'} 
               />
             </TouchableOpacity>
             <TouchableOpacity 
@@ -117,7 +118,7 @@ export default function JoinBattleScreen() {
               <MaterialIcons 
                 name="chevron-right" 
                 size={28} 
-                color={dayjs(selectedDate).add(7, 'day').isBetween(today, maxDate, 'day', '[]') ? '#00BE76' : '#CCCCCC'} 
+                color={dayjs(selectedDate).add(7, 'day').isBetween(today, maxDate, 'day', '[]') ? colors.primary : '#CCCCCC'} 
               />
             </TouchableOpacity>
           </StyledView>
@@ -132,7 +133,7 @@ export default function JoinBattleScreen() {
                 Available until {dayjs(maxDate).format('MMM D')}
               </StyledText>
               <StyledTouchableOpacity onPress={() => handleDateSelect(today)}>
-                <StyledText className="text-[#00BE76] font-medium">Today</StyledText>
+                <StyledText className="text-primary font-medium">Today</StyledText>
               </StyledTouchableOpacity>
             </StyledView>
           </StyledView>
@@ -152,14 +153,14 @@ export default function JoinBattleScreen() {
         <StyledTouchableOpacity
           onPress={() => setSelectedSport('cricket')}
           className={`flex-1 mr-2 p-3 rounded-lg ${
-            selectedSport === 'cricket' ? 'bg-[#00BE76]' : 'bg-gray-100'
+            selectedSport === 'cricket' ? 'bg-primary' : 'bg-gray-100'
           }`}
         >
           <StyledView className="items-center mb-2">
             <MaterialIcons 
               name="sports-cricket" 
               size={32} 
-              color={selectedSport === 'cricket' ? '#FFFFFF' : '#00BE76'} 
+              color={selectedSport === 'cricket' ? colors.white : colors.primary} 
             />
           </StyledView>
           <StyledText className={`text-center font-medium ${
@@ -172,14 +173,14 @@ export default function JoinBattleScreen() {
         <StyledTouchableOpacity
           onPress={() => setSelectedSport('football')}
           className={`flex-1 p-3 rounded-lg ${
-            selectedSport === 'football' ? 'bg-[#00BE76]' : 'bg-gray-100'
+            selectedSport === 'football' ? 'bg-primary' : 'bg-gray-100'
           }`}
         >
           <StyledView className="items-center mb-2">
             <MaterialIcons 
               name="sports-soccer" 
               size={32} 
-              color={selectedSport === 'football' ? '#FFFFFF' : '#00BE76'} 
+              color={selectedSport === 'football' ? colors.white : colors.primary} 
             />
           </StyledView>
           <StyledText className={`text-center font-medium ${
@@ -204,13 +205,13 @@ export default function JoinBattleScreen() {
                   <MaterialIcons
                     name={challenge.sport === 'cricket' ? 'sports-cricket' : 'sports-soccer'}
                     size={24}
-                    color="#00BE76"
+                    color={colors.primary}
                   />
                   <StyledText className="ml-2 text-lg font-bold text-gray-800">
                     {challenge.teamName}
                   </StyledText>
                 </StyledView>
-                <MaterialIcons name="chat" size={24} color="#00BE76" />
+                <MaterialIcons name="chat" size={24} color={colors.primary} />
               </StyledView>
 
               <StyledView className="space-y-2">

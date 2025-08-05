@@ -22,7 +22,7 @@ export const Button = ({
 
   return (
     <StyledPressable 
-      className={`bg-[#00BE76] py-4 px-8 rounded-full items-center transition-all
+      className={`bg-primary py-4 px-8 rounded-full items-center transition-all
         ${fullWidth ? 'w-full' : ''} 
         ${isPressed ? 'opacity-80 scale-95' : ''} 
         ${className}`}

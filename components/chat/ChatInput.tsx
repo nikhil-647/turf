@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Platform } from 'react-native';
 import { styled } from 'nativewind';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '../../constants/colors';
 
 const StyledView = styled(View);
 const StyledTextInput = styled(TextInput);
@@ -40,14 +41,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
         <StyledTouchableOpacity
           onPress={handleSend}
           className={`rounded-full p-2 h-10 w-10 items-center justify-center ${
-            message.trim() ? 'bg-[#00BE76]' : 'bg-gray-300'
+            message.trim() ? 'bg-primary' : 'bg-gray-300'
           }`}
           disabled={!message.trim()}
         >
           <Ionicons
             name="send"
             size={20}
-            color="white"
+            color={colors.white}
           />
         </StyledTouchableOpacity>
       </StyledView>

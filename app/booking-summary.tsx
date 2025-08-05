@@ -5,6 +5,7 @@ import { styled } from 'nativewind';
 import dayjs from 'dayjs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SecondaryHeader } from '../components/Header';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -143,19 +144,19 @@ export default function BookingSummaryScreen() {
         <StyledView className="flex-row justify-between mb-4">
           <StyledTouchableOpacity
             onPress={() => setBookingMode('SELF_FULL')}
-            className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode === 'SELF_FULL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+            className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode === 'SELF_FULL' ? 'bg-primary border-primary' : 'border-gray-300 bg-white'}`}
           >
             <StyledText className={`text-center font-medium ${bookingMode === 'SELF_FULL' ? 'text-white' : 'text-gray-800'}`}>Self (Private)</StyledText>
           </StyledTouchableOpacity>
           <StyledTouchableOpacity
             onPress={() => setBookingMode('TEAM_FULL')}
-            className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode === 'TEAM_FULL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+            className={`flex-1 mr-2 p-3 rounded-lg border ${bookingMode === 'TEAM_FULL' ? 'bg-primary border-primary' : 'border-gray-300 bg-white'}`}
           >
             <StyledText className={`text-center font-medium ${bookingMode === 'TEAM_FULL' ? 'text-white' : 'text-gray-800'}`}>Team (Private)</StyledText>
           </StyledTouchableOpacity>
           <StyledTouchableOpacity
             onPress={() => setBookingMode('TEAM_CHALLENGE')}
-            className={`flex-1 p-3 rounded-lg border ${bookingMode === 'TEAM_CHALLENGE' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+            className={`flex-1 p-3 rounded-lg border ${bookingMode === 'TEAM_CHALLENGE' ? 'bg-primary border-primary' : 'border-gray-300 bg-white'}`}
           >
             <StyledText className={`text-center font-medium ${bookingMode === 'TEAM_CHALLENGE' ? 'text-white' : 'text-gray-800'}`}>Team (Challenge)</StyledText>
           </StyledTouchableOpacity>
@@ -186,20 +187,20 @@ export default function BookingSummaryScreen() {
             <StyledView className="flex-row justify-between mb-4">
               <StyledTouchableOpacity
                 onPress={() => setSelectedSport('CRICKET')}
-                className={`flex-1 mr-2 p-3 rounded-lg border ${selectedSport === 'CRICKET' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+                className={`flex-1 mr-2 p-3 rounded-lg border ${selectedSport === 'CRICKET' ? 'bg-primary border-primary' : 'border-gray-300 bg-white'}`}
               >
                 <StyledView className="items-center mb-2">
-                  <MaterialIcons name="sports-cricket" size={32} color={selectedSport === 'CRICKET' ? '#FFFFFF' : '#00BE76'} />
+                  <MaterialIcons name="sports-cricket" size={32} color={selectedSport === 'CRICKET' ? colors.white : colors.primary} />
                 </StyledView>
                 <StyledText className={`text-center font-medium ${selectedSport === 'CRICKET' ? 'text-white' : 'text-gray-800'}`}>Cricket</StyledText>
               </StyledTouchableOpacity>
 
               <StyledTouchableOpacity
                 onPress={() => setSelectedSport('FOOTBALL')}
-                className={`flex-1 p-3 rounded-lg border ${selectedSport === 'FOOTBALL' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+                className={`flex-1 p-3 rounded-lg border ${selectedSport === 'FOOTBALL' ? 'bg-primary border-primary' : 'border-gray-300 bg-white'}`}
               >
                 <StyledView className="items-center mb-2">
-                  <MaterialIcons name="sports-soccer" size={32} color={selectedSport === 'FOOTBALL' ? '#FFFFFF' : '#00BE76'} />
+                  <MaterialIcons name="sports-soccer" size={32} color={selectedSport === 'FOOTBALL' ? colors.white : colors.primary} />
                 </StyledView>
                 <StyledText className={`text-center font-medium ${selectedSport === 'FOOTBALL' ? 'text-white' : 'text-gray-800'}`}>Football</StyledText>
               </StyledTouchableOpacity>
@@ -217,7 +218,7 @@ export default function BookingSummaryScreen() {
               bookingMode === 'TEAM_FULL' || bookingMode === 'TEAM_CHALLENGE' 
                 ? 'bg-gray-200 border-gray-300' 
                 : walletType === 'PERSONAL' 
-                  ? 'bg-[#00BE76] border-[#00BE76]' 
+                  ? 'bg-primary border-primary' 
                   : 'border-gray-300 bg-white'
             }`}
           >
@@ -235,7 +236,7 @@ export default function BookingSummaryScreen() {
               }, 100);
             }}
             disabled={bookingMode === 'SELF_FULL'}
-            className={`flex-1 p-3 rounded-lg border ${bookingMode === 'SELF_FULL' ? 'bg-gray-200 border-gray-300' : walletType === 'TEAM' ? 'bg-[#00BE76] border-[#00BE76]' : 'border-gray-300 bg-white'}`}
+            className={`flex-1 p-3 rounded-lg border ${bookingMode === 'SELF_FULL' ? 'bg-gray-200 border-gray-300' : walletType === 'TEAM' ? 'bg-primary border-primary' : 'border-gray-300 bg-white'}`}
           >
             <StyledText className={`text-center font-medium ${walletType === 'TEAM' && bookingMode !== 'SELF_FULL' ? 'text-white' : 'text-gray-800'}`}>Team Wallet</StyledText>
             {walletType === 'TEAM' && (
@@ -320,7 +321,7 @@ export default function BookingSummaryScreen() {
           onPress={handleConfirm}
           disabled={walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam)}
           className={`py-4 rounded-lg items-center ${
-            walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam) ? 'bg-gray-400' : 'bg-[#00BE76]'
+            walletType === 'TEAM' && (!isAdmin || bookingMode === 'SELF_FULL' || !selectedTeam) ? 'bg-gray-400' : 'bg-primary'
           }`}
         >
           <StyledText className="text-white font-bold text-base">

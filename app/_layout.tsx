@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
+import { colors } from '../constants/colors';
 
 export default function RootLayout() {
   // Hide specific routes from appearing in the drawer while keeping them available in the app.
@@ -33,9 +34,9 @@ export default function RootLayout() {
         {/* User Avatar & Details */}
         <View style={{ alignItems: 'center', paddingVertical: 24 }}>
           {/* Placeholder avatar icon until user uploads a profile picture */}
-          <MaterialIcons name="account-circle" size={80} color="#00BE76" />
+          <MaterialIcons name="account-circle" size={80} color={colors.primary} />
           <Text style={{ fontWeight: 'bold', marginTop: 12, fontSize: 16 }}>User Name</Text>
-          <Text style={{ color: '#6B7280' }}>+91 9876543210</Text>
+          <Text style={{ color: colors.gray[500] }}>+91 9876543210</Text>
         </View>
 
         {/* Drawer items */}
@@ -51,10 +52,10 @@ export default function RootLayout() {
         headerShown: !hiddenRoutes.includes(route.name),
         header: () => <Header />,
         drawerStyle: {
-          backgroundColor: '#FFFFFF',
+          backgroundColor: colors.white,
         },
-        drawerActiveTintColor: '#00BE76',
-        drawerInactiveTintColor: '#6B7280',
+        drawerActiveTintColor: colors.primary,
+        drawerInactiveTintColor: colors.gray[500],
       })}
       drawerContent={CustomDrawerContent}
     >

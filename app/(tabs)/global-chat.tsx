@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CreatePlayerRequestModal } from '../../components/chat/CreatePlayerRequestModal';
+import { colors } from '../../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -79,7 +80,7 @@ export default function GlobalChatScreen() {
               <MaterialIcons 
                 name={item.sport === 'football' ? 'sports-soccer' : 'sports-cricket'} 
                 size={24} 
-                color="#00BE76" 
+                color={colors.primary} 
               />
               <StyledText className="ml-2 font-semibold text-gray-900">
                 {item.author}
@@ -110,7 +111,7 @@ export default function GlobalChatScreen() {
             {spotsLeft > 0 && (
               <StyledTouchableOpacity
                 onPress={() => handleJoinTeam(item.id)}
-                className="bg-[#00BE76] px-4 py-2 rounded-full"
+                className="bg-primary px-4 py-2 rounded-full"
               >
                 <StyledText className="text-white font-medium">
                   Join Team
@@ -136,9 +137,9 @@ export default function GlobalChatScreen() {
       {/* Floating Action Button */}
       <StyledTouchableOpacity
         onPress={() => setIsModalVisible(true)}
-        className="absolute bottom-6 right-6 bg-[#00BE76] w-14 h-14 rounded-full items-center justify-center shadow-lg"
+        className="absolute bottom-6 right-6 bg-primary w-14 h-14 rounded-full items-center justify-center shadow-lg"
       >
-        <MaterialIcons name="add" size={30} color="white" />
+        <MaterialIcons name="add" size={30} color={colors.white} />
       </StyledTouchableOpacity>
 
       <CreatePlayerRequestModal

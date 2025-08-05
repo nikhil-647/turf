@@ -147,7 +147,7 @@ export default function WeeklyCalendar({ selectedDate, onDateSelect, minDate, ma
                   disabled={day.isDisabled}
                   className={`items-center justify-center w-10 h-10 rounded-full ${
                     day.isSelected && !day.isDisabled
-                      ? 'bg-[#00BE76]'
+                      ? 'bg-primary'
                       : 'bg-transparent'
                   }`}
                 >
@@ -158,7 +158,7 @@ export default function WeeklyCalendar({ selectedDate, onDateSelect, minDate, ma
                         : day.isSelected
                         ? 'text-white font-bold'
                         : day.isToday
-                        ? 'text-[#00BE76] font-bold'
+                        ? 'text-primary font-bold'
                         : 'text-gray-800'
                     }`}
                   >
@@ -166,7 +166,7 @@ export default function WeeklyCalendar({ selectedDate, onDateSelect, minDate, ma
                   </StyledText>
                   {day.isToday && !day.isSelected && (
                     <StyledView 
-                      className="absolute bottom-1 w-1 h-1 rounded-full bg-[#00BE76]" 
+                      className="absolute bottom-1 w-1 h-1 rounded-full bg-primary" 
                     />
                   )}
                 </StyledTouchableOpacity>

@@ -12,6 +12,7 @@ import {
 import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { colors } from '../../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -142,13 +143,13 @@ export const CreatePlayerRequestModal: React.FC<CreatePlayerRequestModalProps> =
     <StyledTouchableOpacity
       onPress={() => setSport(type)}
       className={`flex-1 flex-row items-center justify-center p-4 rounded-lg mr-2 ${
-        sport === type ? 'bg-[#00BE76]' : 'bg-gray-100'
+        sport === type ? 'bg-primary' : 'bg-gray-100'
       }`}
     >
       <MaterialIcons
         name={sportIcon}
         size={24}
-        color={sport === type ? 'white' : '#6B7280'}
+        color={sport === type ? colors.white : colors.gray[500]}
       />
       <StyledText
         className={`ml-2 font-medium ${
@@ -216,13 +217,13 @@ export const CreatePlayerRequestModal: React.FC<CreatePlayerRequestModalProps> =
           <StyledView className="w-full mt-2 bg-white rounded-lg border border-gray-200 overflow-hidden">
             <StyledView className="flex-row justify-between items-center px-4 py-2 bg-gray-50 border-b border-gray-200">
               <StyledTouchableOpacity onPress={handleCancel}>
-                <StyledText className="text-[#00BE76] font-medium">Cancel</StyledText>
+                <StyledText className="text-primary font-medium">Cancel</StyledText>
               </StyledTouchableOpacity>
               <StyledText className="text-base font-medium text-gray-900">
                 Select {mode === 'date' ? 'Date' : 'Time'}
               </StyledText>
               <StyledTouchableOpacity onPress={handleDone}>
-                <StyledText className="text-[#00BE76] font-medium">Done</StyledText>
+                <StyledText className="text-primary font-medium">Done</StyledText>
               </StyledTouchableOpacity>
             </StyledView>
             <DateTimePicker
@@ -328,9 +329,9 @@ export const CreatePlayerRequestModal: React.FC<CreatePlayerRequestModalProps> =
           <StyledView className="p-4 border-t border-gray-200">
             <StyledTouchableOpacity
               onPress={handleSubmit}
-              className="bg-[#00BE76] p-4 rounded-lg flex-row items-center justify-center"
+              className="bg-primary p-4 rounded-lg flex-row items-center justify-center"
             >
-              <MaterialIcons name="send" size={24} color="white" style={{ marginRight: 8 }} />
+              <MaterialIcons name="send" size={24} color={colors.white} style={{ marginRight: 8 }} />
               <StyledText className="text-white text-center font-semibold text-base">
                 Post Player Request
               </StyledText>

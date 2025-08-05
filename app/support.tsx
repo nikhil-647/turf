@@ -111,7 +111,7 @@ export default function SupportScreen() {
         {/* Submit Button */}
         <StyledTouchableOpacity
           onPress={handleSubmit}
-          className="bg-[#00BE76] rounded-lg py-4 items-center mb-6"
+          className="bg-primary rounded-lg py-4 items-center mb-6"
         >
           <StyledText className="text-white font-semibold text-lg">
             Create Ticket
