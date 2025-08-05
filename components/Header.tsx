@@ -8,6 +8,37 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const StyledView = styled(View);
 const StyledText = styled(Text);
 
+interface SecondaryHeaderProps {
+  title: string;
+  showBackButton?: boolean;
+  rightElement?: React.ReactNode;
+}
+
+// A header component for secondary screens with a back button and title
+export function SecondaryHeader({ title, showBackButton = true, rightElement }: SecondaryHeaderProps) {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+
+  return (
+    <StyledView 
+      className="bg-white border-b border-gray-200"
+      style={{ paddingTop: insets.top }}
+    >
+      <StyledView className="p-4 flex-row items-center">
+        {showBackButton && (
+          <TouchableOpacity onPress={() => router.back()} className="mr-2">
+            <MaterialIcons name="arrow-back" size={28} color="#00BE76" />
+          </TouchableOpacity>
+        )}
+        <StyledText className="flex-1 text-xl font-bold text-gray-800 text-center">
+          {title}
+        </StyledText>
+        {rightElement || <View style={{ width: 28 }} />}
+      </StyledView>
+    </StyledView>
+  );
+}
+
 // A reusable header component that shows a menu button, greeting and wallet balance.
 export default function Header() {
   // We deliberately don't type-cast navigation to keep things simple for now.

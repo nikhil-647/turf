@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { styled } from 'nativewind';
 import dayjs from 'dayjs';
 import { MaterialIcons } from '@expo/vector-icons';
+import { SecondaryHeader } from '../components/Header';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -102,23 +103,7 @@ export default function BookingSummaryScreen() {
 
   return (
     <StyledView className="flex-1 bg-gray-50">
-      {/* Header */}
-      <StyledView 
-        style={{ 
-          backgroundColor: 'white',
-          borderBottomWidth: 1,
-          borderBottomColor: '#e5e7eb'
-        }}
-      >
-        <StyledView className="p-4 flex-row items-center">
-          <TouchableOpacity onPress={() => router.back()} className="mr-2">
-            <MaterialIcons name="arrow-back" size={28} color="#00BE76" />
-          </TouchableOpacity>
-          <StyledText className="flex-1 text-xl font-bold text-gray-800 text-center">Booking Summary</StyledText>
-          {/* Placeholder to balance flex for centering title */}
-          <View style={{ width: 28 }} />
-        </StyledView>
-      </StyledView>
+      <SecondaryHeader title="Booking Summary" />
 
       <StyledScrollView ref={scrollViewRef} className="flex-1 p-4">
         {/* Selected slots */}

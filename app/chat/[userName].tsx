@@ -6,6 +6,7 @@ import { ChatInput } from '../../components/chat/ChatInput';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { SecondaryHeader } from '../../components/Header';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -57,25 +58,8 @@ export default function ChatWindowScreen() {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" />
+      <SecondaryHeader title={userName as string} />
       
-      {/* Custom Header */}
-      <StyledView 
-        style={{
-          backgroundColor: 'white',
-          borderBottomWidth: 1,
-          borderBottomColor: '#e5e7eb'
-        }}
-      >
-        <StyledView className="flex-row items-center p-4">
-          <TouchableOpacity onPress={() => router.back()} className="mr-2">
-            <MaterialIcons name="arrow-back" size={28} color="#00BE76" />
-          </TouchableOpacity>
-          <StyledText className="flex-1 text-xl font-bold text-gray-800">
-            {userName as string}
-          </StyledText>
-        </StyledView>
-      </StyledView>
-
       <KeyboardAvoidingView 
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

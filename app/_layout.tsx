@@ -7,7 +7,7 @@ import React from 'react';
 
 export default function RootLayout() {
   // Hide specific routes from appearing in the drawer while keeping them available in the app.
-  const hiddenRoutes = ['index', 'login', 'welcome', 'verify-otp'];
+  const hiddenRoutes = ['index', 'login', 'welcome', 'verify-otp', 'booking-summary', 'chat/[userName]'];
 
   const CustomDrawerContent = (props: any) => {
     // Filter out unwanted routes for the drawer list

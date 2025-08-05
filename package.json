@@ -16,9 +16,11 @@
     "@expo/vector-icons": "^14.1.0",
     "@react-native-community/datetimepicker": "^8.4.2",
     "@react-navigation/drawer": "^7.5.3",
+    "@types/react-native-snap-carousel": "^3.8.11",
     "dayjs": "^1.11.13",
     "expo": "53.0.20",
     "expo-constants": "~17.1.7",
+    "expo-image-picker": "~16.1.4",
     "expo-linking": "~7.1.7",
     "expo-router": "~5.1.4",
     "expo-status-bar": "~2.2.3",
@@ -27,11 +29,11 @@
     "react-native": "0.79.5",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-image-viewing": "^0.2.2",
+    "react-native-pager-view": "^6.8.1",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "react-native-svg": "^15.11.2",
-    "expo-image-picker": "~16.1.4"
+    "react-native-svg": "^15.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
