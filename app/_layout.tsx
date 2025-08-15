@@ -1,16 +1,45 @@
 import { Drawer } from 'expo-router/drawer';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import Header from '../components/Header';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { colors } from '../constants/colors';
+import { useAuthStore } from '../lib/stores/auth';
+import { useRouter } from 'expo-router';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
 
 export default function RootLayout() {
+  const router = useRouter();
+  const signOut = useAuthStore((state) => state.signOut);
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Confirm Logout",
+      "Are you sure you want to logout? You'll need to verify via OTP again to login.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            await signOut();
+            router.replace('/login');
+          }
+        }
+      ]
+    );
+  };
+
   // Hide specific routes from appearing in the drawer while keeping them available in the app.
   const hiddenRoutes = ['index', 'login', 'welcome', 'verify-otp', 'booking-summary', 'chat/[userName]'];
 
   const CustomDrawerContent = (props: any) => {
+    const user = useAuthStore((state) => state.user);
+    
     // Filter out unwanted routes for the drawer list
     const filteredRoutes = props.state.routes.filter((route: any) => !hiddenRoutes.includes(route.name));
     const filteredRouteNames = filteredRoutes.map((route: any) => route.name);
@@ -29,14 +58,20 @@ export default function RootLayout() {
       },
     };
 
+    console.log('user -->', );
+
     return (
       <DrawerContentScrollView {...filteredProps} contentContainerStyle={{ flex: 1 }}>
         {/* User Avatar & Details */}
         <View style={{ alignItems: 'center', paddingVertical: 24 }}>
           {/* Placeholder avatar icon until user uploads a profile picture */}
           <MaterialIcons name="account-circle" size={80} color={colors.primary} />
-          <Text style={{ fontWeight: 'bold', marginTop: 12, fontSize: 16 }}>User Name</Text>
-          <Text style={{ color: colors.gray[500] }}>+91 9876543210</Text>
+          <Text style={{ fontWeight: 'bold', marginTop: 12, fontSize: 16 }}>
+            {user?.user_metadata?.display_name || 'Guest'}
+          </Text>
+          <Text style={{ color: colors.gray[500] }}>
+            {`+${user?.phone}` || 'No phone number'}
+          </Text>
         </View>
 
         {/* Drawer items */}
@@ -127,8 +162,15 @@ export default function RootLayout() {
           drawerLabel: 'Logout',
           drawerIcon: ({ color }) => (
             <MaterialIcons name="logout" size={24} color={color} />
-          ),
+          )
         }}
+        listeners={({ navigation }) => ({
+          drawerItemPress: () => {
+            handleLogout();
+            navigation.closeDrawer();
+            return false; // Prevents navigation
+          }
+        })}
       />
     </Drawer>
   );

@@ -9,6 +9,8 @@ const initialState = {
   session: null,
   isLoading: false,
   isAuthenticated: false,
+  isOTPVerified: false,
+  phoneNumber: null,
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -57,9 +59,25 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
+      setPhoneNumber: (phoneNumber: string) =>
+        set((state) => ({
+          phoneNumber,
+        })),
+
+      setOTPVerified: (isVerified: boolean) =>
+        set((state) => ({
+          isOTPVerified: isVerified,
+        })),
+
       signOut: async () => {
         await supabase.auth.signOut();
-        set(initialState);
+        // Keep the phone number and OTP verification status when logging out
+        const { phoneNumber, isOTPVerified } = useAuthStore.getState();
+        set({
+          ...initialState,
+          phoneNumber,
+          isOTPVerified,
+        });
       },
     }),
     {

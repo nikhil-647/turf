@@ -4,6 +4,9 @@ import { styled } from 'nativewind';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../constants/colors';
+import { useAuthStore } from '../lib/stores/auth';
+import { supabase } from '../lib/supabase';
+import { router } from 'expo-router';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -18,6 +21,8 @@ type ValidationErrors = {
 };
 
 export default function AccountScreen() {
+  const { signOut } = useAuthStore();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [userData, setUserData] = useState({
     name: 'John Doe', // Replace with actual user data
     username: 'johndoe123', // Replace with actual username
@@ -75,6 +80,47 @@ export default function AccountScreen() {
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Confirm Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await signOut();
+              router.replace('/');
+            } catch (error) {
+              Alert.alert('Error', 'Failed to logout. Please try again.');
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const { error } = await supabase.auth.admin.deleteUser(
+        (await supabase.auth.getUser()).data.user?.id || ''
+      );
+      
+      if (error) throw error;
+      
+      await signOut();
+      router.replace('/');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to delete account. Please try again.');
     }
   };
 
@@ -230,6 +276,50 @@ export default function AccountScreen() {
             <StyledText className="text-xs text-gray-500 mt-1">
               Phone number cannot be changed
             </StyledText>
+          </StyledView>
+
+          {/* Account Actions Section */}
+          <StyledView className="mt-8">
+            <StyledText className="text-lg font-bold text-gray-800 mb-6">
+              Account Actions
+            </StyledText>
+
+            {/* Logout Button */}
+            <StyledTouchableOpacity
+              onPress={handleLogout}
+              className="flex-row items-center justify-center bg-gray-100 p-4 rounded-lg mb-4"
+              activeOpacity={0.7}
+            >
+              <MaterialIcons name="logout" size={20} color={colors.gray[600]} style={{ marginRight: 8 }} />
+              <StyledText className="text-gray-600 font-medium">Logout</StyledText>
+            </StyledTouchableOpacity>
+
+            {/* Delete Account Button */}
+            <StyledTouchableOpacity
+              onPress={() => {
+                Alert.alert(
+                  'Delete Account',
+                  'This is a destructive action. Do you want to proceed with account deletion?',
+                  [
+                    {
+                      text: 'Cancel',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Proceed',
+                      style: 'destructive',
+                      onPress: () => setShowDeleteConfirm(true),
+                    },
+                  ],
+                  { cancelable: true }
+                );
+              }}
+              className="flex-row items-center justify-center bg-red-100 p-4 rounded-lg"
+              activeOpacity={0.7}
+            >
+              <MaterialIcons name="delete-forever" size={20} color={colors.red[500]} style={{ marginRight: 8 }} />
+              <StyledText className="text-red-600 font-medium">Delete Account</StyledText>
+            </StyledTouchableOpacity>
           </StyledView>
         </StyledView>
       </StyledView>
