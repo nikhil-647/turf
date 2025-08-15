@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
+import { Text, View, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
 import { styled } from 'nativewind';
 import { Button } from './Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { colors } from '../constants/colors';
+import { auth } from '../lib/auth';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -23,6 +24,7 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
   const [timer, setTimer] = useState(180); // 3 minutes in seconds
   const [canResend, setCanResend] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const router = useRouter();
 
@@ -50,20 +52,44 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (otp.length === 6) {
-      onVerifyOTP?.(otp);
-      // Navigate to welcome screen after successful verification
-      router.push('/welcome');
+      setLoading(true);
+      try {
+        const { error, session } = await auth.verifyOTP(phoneNumber, otp);
+        if (error) {
+          Alert.alert('Error', error.message);
+        } else {
+          onVerifyOTP?.(otp);
+          // Navigate to welcome screen after successful verification
+          router.push('/welcome');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Failed to verify OTP. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (canResend) {
-      setTimer(180);
-      setCanResend(false);
-      setOtp('');
-      onResendOTP?.();
+      setLoading(true);
+      try {
+        const { error } = await auth.sendOTP(phoneNumber);
+        if (error) {
+          Alert.alert('Error', error.message);
+        } else {
+          setTimer(180);
+          setCanResend(false);
+          setOtp('');
+          onResendOTP?.();
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Failed to resend OTP. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -142,13 +168,21 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
             />
           </StyledView>
 
-          <Button 
-            onPress={handleSubmit} 
-            fullWidth 
-            className={`mb-4 ${otp.length === 6 ? 'opacity-100' : 'opacity-50'}`}
-          >
-            Verify Code
-          </Button>
+          <StyledView className="mb-4">
+            <Button 
+              onPress={handleSubmit} 
+              fullWidth 
+              disabled={loading || otp.length !== 6}
+              className={otp.length === 6 ? 'opacity-100' : 'opacity-50'}
+            >
+              Verify Code
+            </Button>
+            {loading && (
+              <StyledView className="absolute inset-0 items-center justify-center">
+                <ActivityIndicator color={colors.primary} />
+              </StyledView>
+            )}
+          </StyledView>
 
           <StyledView className="items-center">
             <StyledText className="text-gray-600 mb-2">

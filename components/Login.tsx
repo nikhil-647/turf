@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { styled } from 'nativewind';
 import Football from '../assets/football.svg';
 import { Button } from './Button';
+import { auth } from '../lib/auth';
+import { colors } from '../constants/colors';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -14,9 +16,30 @@ type LoginScreenProps = {
 
 export const LoginScreen = ({ onSendOTP }: LoginScreenProps) => {
   const [mobileNo, setMobileNo] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSendOTP = () => {
-      onSendOTP?.(mobileNo);
+  const handleSendOTP = async () => {
+    if (!mobileNo) {
+      Alert.alert('Error', 'Please enter your mobile number');
+      return;
+    }
+
+    // Format phone number to international format if not already
+    const formattedPhone = mobileNo.startsWith('+') ? mobileNo : `+91${mobileNo}`;
+    
+    setLoading(true);
+    try {
+      const { error } = await auth.sendOTP(formattedPhone);
+      if (error) {
+        Alert.alert('Error', error.message);
+      } else {
+        onSendOTP?.(formattedPhone);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to send OTP. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,13 +58,20 @@ export const LoginScreen = ({ onSendOTP }: LoginScreenProps) => {
           />
         </StyledView>
 
-        <Button 
-          onPress={handleSendOTP}
-          className="mb-8"
-          fullWidth
-        >
-          Send OTP
-        </Button>
+        <StyledView className="mb-8">
+          <Button 
+            onPress={handleSendOTP}
+            fullWidth
+            disabled={loading}
+          >
+            Send OTP
+          </Button>
+          {loading && (
+            <StyledView className="absolute inset-0 items-center justify-center">
+              <ActivityIndicator color={colors.primary} />
+            </StyledView>
+          )}
+        </StyledView>
 
         <StyledView className="w-full h-[300px]">
           <Football width="100%" height={350} />

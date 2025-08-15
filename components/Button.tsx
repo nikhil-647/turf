@@ -10,13 +10,15 @@ type ButtonProps = {
   children: string;
   className?: string;
   fullWidth?: boolean;
+  disabled?: boolean;
 };
 
 export const Button = ({ 
   onPress, 
   children, 
   className = '',
-  fullWidth = false 
+  fullWidth = false,
+  disabled = false
 }: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
 
@@ -25,10 +27,11 @@ export const Button = ({
       className={`bg-primary py-4 px-8 rounded-full items-center transition-all
         ${fullWidth ? 'w-full' : ''} 
         ${isPressed ? 'opacity-80 scale-95' : ''} 
+        ${disabled ? 'opacity-50' : ''}
         ${className}`}
-      onPress={onPress}
-      onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
+      onPress={disabled ? undefined : onPress}
+      onPressIn={() => !disabled && setIsPressed(true)}
+      onPressOut={() => !disabled && setIsPressed(false)}
     >
       <StyledText className="text-white text-lg font-semibold">{children}</StyledText>
     </StyledPressable>
