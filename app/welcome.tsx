@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, SafeAreaView, Alert } from 'react-native';
 import { styled } from 'nativewind';
 import { Button } from '../components/Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { colors } from '../constants/colors';
+import { useAuthStore } from '../lib/stores/auth';
+import { validateDisplayName, validateEmail } from '../lib/validation';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -13,20 +15,41 @@ const StyledSafeAreaView = styled(SafeAreaView);
 
 export default function WelcomeScreen() {
   const router = useRouter();
+  const updateProfile = useAuthStore((state) => state.updateProfile);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [nameError, setNameError] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
-    // Store user data if needed
-    // You might want to store this in AsyncStorage or your backend
-    const userData = {
-      name,
-      email
-    };
-    console.log('User Data:', userData);
-    
-    // Navigate to the main app tabs
-    router.replace('/home');
+  const handleSubmit = async () => {
+    // Reset errors
+    setNameError(undefined);
+
+    // Validate input
+    const nameValidation = validateDisplayName(name);
+
+    if (!nameValidation.isValid) {
+      setNameError(nameValidation.error);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await updateProfile({
+        display_name: name.trim()
+      });
+      
+      // Navigate to the main app tabs
+      router.replace('/home');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      Alert.alert(
+        'Error',
+        'Failed to update profile. Please try again.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -53,31 +76,28 @@ export default function WelcomeScreen() {
             What should we call you?
           </StyledText>
           
-          <StyledView className="mb-4">
-            <StyledTextInput
-              className="border border-primary rounded-lg p-4 text-base"
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-            />
-          </StyledView>
-
           <StyledView className="mb-8">
             <StyledTextInput
-              className="border border-primary rounded-lg p-4 text-base"
-              placeholder="Email Id (Optional)"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
+              className={`border ${nameError ? 'border-red-500' : 'border-primary'} rounded-lg p-4 text-base`}
+              placeholder="Display Name (no spaces)"
+              value={name}
+              onChangeText={(text) => {
+                setName(text);
+                setNameError(undefined);
+              }}
               autoCapitalize="none"
             />
+            {nameError && (
+              <StyledText className="text-red-500 text-sm mt-1">{nameError}</StyledText>
+            )}
           </StyledView>
 
           <Button 
             onPress={handleSubmit}
             fullWidth
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? 'Saving...' : 'Submit'}
           </Button>
         </StyledView>
       </StyledView>

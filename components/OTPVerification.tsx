@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { colors } from '../constants/colors';
 import { auth } from '../lib/auth';
+import { useAuthStore } from '../lib/stores/auth';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -24,7 +25,7 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
   const [timer, setTimer] = useState(180); // 3 minutes in seconds
   const [canResend, setCanResend] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const isLoading = useAuthStore((state) => state.isLoading);
   const inputRef = useRef<TextInput>(null);
   const router = useRouter();
 
@@ -54,41 +55,27 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
 
   const handleSubmit = async () => {
     if (otp.length === 6) {
-      setLoading(true);
-      try {
-        const { error, session } = await auth.verifyOTP(phoneNumber, otp);
-        if (error) {
-          Alert.alert('Error', error.message);
-        } else {
-          onVerifyOTP?.(otp);
-          // Navigate to welcome screen after successful verification
-          router.push('/welcome');
-        }
-      } catch (error) {
-        Alert.alert('Error', 'Failed to verify OTP. Please try again.');
-      } finally {
-        setLoading(false);
+      const { error, session } = await auth.verifyOTP(phoneNumber, otp);
+      if (error) {
+        Alert.alert('Error', error.message);
+      } else {
+        onVerifyOTP?.(otp);
+        // Navigate to welcome screen after successful verification
+        router.push('/welcome');
       }
     }
   };
 
   const handleResend = async () => {
     if (canResend) {
-      setLoading(true);
-      try {
-        const { error } = await auth.sendOTP(phoneNumber);
-        if (error) {
-          Alert.alert('Error', error.message);
-        } else {
-          setTimer(180);
-          setCanResend(false);
-          setOtp('');
-          onResendOTP?.();
-        }
-      } catch (error) {
-        Alert.alert('Error', 'Failed to resend OTP. Please try again.');
-      } finally {
-        setLoading(false);
+      const { error } = await auth.sendOTP(phoneNumber);
+      if (error) {
+        Alert.alert('Error', error.message);
+      } else {
+        setTimer(180);
+        setCanResend(false);
+        setOtp('');
+        onResendOTP?.();
       }
     }
   };
@@ -172,12 +159,12 @@ export const OTPVerification = ({ phoneNumber, onVerifyOTP, onResendOTP }: OTPVe
             <Button 
               onPress={handleSubmit} 
               fullWidth 
-              disabled={loading || otp.length !== 6}
+              disabled={isLoading || otp.length !== 6}
               className={otp.length === 6 ? 'opacity-100' : 'opacity-50'}
             >
               Verify Code
             </Button>
-            {loading && (
+            {isLoading && (
               <StyledView className="absolute inset-0 items-center justify-center">
                 <ActivityIndicator color={colors.primary} />
               </StyledView>

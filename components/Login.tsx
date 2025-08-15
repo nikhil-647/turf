@@ -5,6 +5,7 @@ import Football from '../assets/football.svg';
 import { Button } from './Button';
 import { auth } from '../lib/auth';
 import { colors } from '../constants/colors';
+import { useAuthStore } from '../lib/stores/auth';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -16,7 +17,7 @@ type LoginScreenProps = {
 
 export const LoginScreen = ({ onSendOTP }: LoginScreenProps) => {
   const [mobileNo, setMobileNo] = useState('');
-  const [loading, setLoading] = useState(false);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   const handleSendOTP = async () => {
     if (!mobileNo) {
@@ -27,18 +28,11 @@ export const LoginScreen = ({ onSendOTP }: LoginScreenProps) => {
     // Format phone number to international format if not already
     const formattedPhone = mobileNo.startsWith('+') ? mobileNo : `+91${mobileNo}`;
     
-    setLoading(true);
-    try {
-      const { error } = await auth.sendOTP(formattedPhone);
-      if (error) {
-        Alert.alert('Error', error.message);
-      } else {
-        onSendOTP?.(formattedPhone);
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to send OTP. Please try again.');
-    } finally {
-      setLoading(false);
+    const { error } = await auth.sendOTP(formattedPhone);
+    if (error) {
+      Alert.alert('Error', error.message);
+    } else {
+      onSendOTP?.(formattedPhone);
     }
   };
 
@@ -62,11 +56,11 @@ export const LoginScreen = ({ onSendOTP }: LoginScreenProps) => {
           <Button 
             onPress={handleSendOTP}
             fullWidth
-            disabled={loading}
+            disabled={isLoading}
           >
             Send OTP
           </Button>
-          {loading && (
+          {isLoading && (
             <StyledView className="absolute inset-0 items-center justify-center">
               <ActivityIndicator color={colors.primary} />
             </StyledView>

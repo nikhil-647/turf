@@ -5,6 +5,7 @@ import { useNavigation, useRouter } from 'expo-router';
 import { styled } from 'nativewind';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../constants/colors';
+import { useAuthStore } from '../lib/stores/auth';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -46,6 +47,7 @@ export default function Header() {
   const navigation = useNavigation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const user = useAuthStore((state) => state.user);
 
   return (
     <StyledView
@@ -62,9 +64,11 @@ export default function Header() {
         >
           <MaterialIcons name="menu" size={24} color={colors.primary} />
         </TouchableOpacity>
-        <StyledText className="ml-3 text-lg font-semibold text-gray-800">
-          Hi Nikhil
-        </StyledText>
+                  <TouchableOpacity onPress={() => router.push('/(tabs)/home')}>
+            <StyledText className="ml-3 text-lg font-semibold text-gray-800">
+              Hi {user?.user_metadata?.display_name || 'Guest'}
+            </StyledText>
+          </TouchableOpacity>
       </StyledView>
 
       {/* Wallet */}

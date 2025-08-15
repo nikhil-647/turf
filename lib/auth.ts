@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { useAuthStore } from './stores/auth';
 
 export type AuthError = {
   message: string;
@@ -11,6 +12,7 @@ export const auth = {
    */
   async sendOTP(phoneNumber: string): Promise<{ error: AuthError | null }> {
     try {
+      useAuthStore.getState().setLoading(true);
       const { error } = await supabase.auth.signInWithOtp({
         phone: phoneNumber,
       });
@@ -22,6 +24,8 @@ export const auth = {
       return { error: null };
     } catch (error) {
       return { error: { message: 'Failed to send OTP' } };
+    } finally {
+      useAuthStore.getState().setLoading(false);
     }
   },
 
@@ -35,6 +39,7 @@ export const auth = {
     session: any | null;
   }> {
     try {
+      useAuthStore.getState().setLoading(true);
       const { data, error } = await supabase.auth.verifyOtp({
         phone: phoneNumber,
         token: otp,
@@ -45,9 +50,15 @@ export const auth = {
         return { error: { message: error.message }, session: null };
       }
 
+      // Update store with user and session data
+      useAuthStore.getState().setUser(data.user);
+      useAuthStore.getState().setSession(data.session);
+
       return { error: null, session: data.session };
     } catch (error) {
       return { error: { message: 'Failed to verify OTP' }, session: null };
+    } finally {
+      useAuthStore.getState().setLoading(false);
     }
   },
 
@@ -56,15 +67,20 @@ export const auth = {
    */
   async signOut(): Promise<{ error: AuthError | null }> {
     try {
+      useAuthStore.getState().setLoading(true);
       const { error } = await supabase.auth.signOut();
       
       if (error) {
         return { error: { message: error.message } };
       }
 
+      // Clear auth store
+      useAuthStore.getState().signOut();
       return { error: null };
     } catch (error) {
       return { error: { message: 'Failed to sign out' } };
+    } finally {
+      useAuthStore.getState().setLoading(false);
     }
   },
 
